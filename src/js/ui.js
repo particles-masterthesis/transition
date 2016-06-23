@@ -27,20 +27,47 @@ export default class UI {
         let chosenVisualization = $("select.visualization option:selected")[0].innerHTML;
 
         switch ($("select.visualization").val()) {
+            case "overview":
+                $("select.feature-x, select.feature-y").attr("disabled", true);
+                $("select.transition, select.transition-layout").attr("disabled", false);
+                $("select.sort-type").attr("disabled", false);
+                break;
+
             case "barChart":
                 $("select.feature-y").attr("disabled", true);
                 $("select.feature-x").attr("disabled", false);
+                $("select.transition, select.transition-layout").attr("disabled", false);
+                $("select.sort-type").attr("disabled", false);
                 break;
 
             case "scatterPlot":
-                $("select.feature").attr("disabled", false);
-                $("select.sort-by").attr("disabled", true);
+                $("select.feature-x, select.feature-y").attr("disabled", false);
+                $("select.transition, select.transition-layout").attr("disabled", false);
+                $("select.sort-by, select.sort-type").attr("disabled", true);
+                break;
+
+            case "dot":
+                $("select.feature-x, select.feature-y").attr("disabled", true);
+                $("select.transition, select.transition-layout").attr("disabled", false);
+                $("select.sort-by, select.sort-type").attr("disabled", true);
                 break;
 
             default:
                 $("select.feature").attr("disabled", true);
-                $("select.sort-by").attr("disabled", true);
+                $("select.transition, select.transition-layout").attr("disabled", true);
+                $("select.sort-type").attr("disabled", true);
                 break;
+        }
+
+        UI.toggleSortByDropdown();
+    }
+
+    static toggleSortByDropdown(){
+        let node = $("select.sort-type");
+        if(node.attr("disabled") || node.val() === "automatically"){
+            $("select.sort-by").attr("disabled", true);
+        } else {
+            $("select.sort-by").attr("disabled", false);
         }
     }
 }

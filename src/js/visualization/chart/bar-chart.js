@@ -248,6 +248,10 @@ export default class BarChart extends Chart {
         let marginBar = widthBar.map(1, this.widthVisualization, 1, 100);
         let widthBarExlusiveMargin = widthBar - marginBar * 2;
 
+        for (let i = 0; i < this.particles.length; i++) {
+            this.particles[i].alpha = 0;
+        }
+
         for (let i = 0; i < values.length; i++) {
             if (typeof uniqueValues[values[i]].appearance === "undefined") {
                 continue;

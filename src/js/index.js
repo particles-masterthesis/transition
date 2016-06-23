@@ -199,23 +199,17 @@ function addEventListener(dataStore, canvas){
         } else {
             $("select.transition-layout").attr("disabled", false);
             $("select.sort-type").attr("disabled", false);
-            if($("select.sort-type").val() === "manually"){
-                $("select.sort-by").attr("disabled", false);
-            }
+            UI.toggleSortByDropdown();
         }
+    });
+
+    $("select.sort-type").change(function(){
+        UI.toggleSortByDropdown();
     });
 
     $("select.sort-by").change(function(){
         let sortByFeature = $(this).children(":selected")[0].innerHTML;
         dataStore.changeSorting(sortByFeature);
         canvas.changeSorting(sortByFeature);
-    });
-
-    $("select.sort-type").change(function(){
-        if($(this).val() === "automatically"){
-            $("select.sort-by").attr("disabled", true);
-        } else {
-            $("select.sort-by").attr("disabled", false);
-        }
     });
 }

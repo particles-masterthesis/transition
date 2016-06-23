@@ -8,6 +8,7 @@ export default class ParticlesContainer extends PIXI.Container {
         this.isAnimating = false;
         this.speedPxPerFrame = 2;
         this.amountOfFrames = 0;
+        this.isThisPrepartion = true;
     }
 
     createParticles(dataset, options) {
@@ -92,7 +93,7 @@ export default class ParticlesContainer extends PIXI.Container {
         let particleReachedDestination;
         let particle;
 
-        if (this.hasPriorityChanged) {
+        if (this.hasPriorityChanged && !this.isThisPrepartion) {
             for (let i = 0; i < this.children.length; i++) {
                 particle = this.getChildAt(i);
 
@@ -118,6 +119,7 @@ export default class ParticlesContainer extends PIXI.Container {
 
             if (particlesReachedDestinations) {
                 this.isAnimating = false;
+                this.isThisPrepartion = false;
             }
         }
 
@@ -203,9 +205,6 @@ export default class ParticlesContainer extends PIXI.Container {
                     transition
                 );
             }
-
-            return this.calculateSpeedArrivingSameTime();
-
         } else if (to === "top") {
             for (let i = 0; i < this.children.length; i++) {
                 particle = this.children[i];
@@ -221,9 +220,10 @@ export default class ParticlesContainer extends PIXI.Container {
                     transition
                 );
             }
-
-            return this.calculateSpeedArrivingSameTime();
         }
+
+        this.isThisPrepartion = true;
+        return this.calculateSpeedArrivingSameTime();
     }
 
     moveParticlesDestination(canvasWidth, canvasHeight, to, transition, width, yTranslate, ratio) {

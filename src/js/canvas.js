@@ -126,11 +126,14 @@ export default class Canvas {
     }
 
     automaticallySortParticles(oldFeature) {
+        // At the beginning there is now old feature and so no feature to sort by
+        if(!oldFeature){
+            return;
+        }
+
         // If the sorting of the particles should be automatic be by the last chosen attribute
         // we have to sort it before we start the transition
         if ($("select.sort-type").val() === "automatically") {
-            let oldFeature = oldFeature || $("select.feature-x").children(":selected")[0].innerHTML;
-
             $("select.sort-by option").filter(function (index) {
                 return $(this).text() === oldFeature;
             }).prop("selected", true);
@@ -256,7 +259,8 @@ export default class Canvas {
             this.height,
             this.particlesContainer,
             this.levelOfDetail,
-            animationCb
+            animationCb,
+            this.particles.sizeOfParticles
         );
 
         this.animationQueue.push(() => {

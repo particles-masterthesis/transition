@@ -192,15 +192,8 @@ function addEventListener(dataStore, canvas){
     });
 
     $("select.transition").change(function () {
-        if($(this).val() === "none"){
-            $("select.transition-layout").attr("disabled", true);
-            $("select.sort-type").attr("disabled", true);
-            $("select.sort-by").attr("disabled", true);
-        } else {
-            $("select.transition-layout").attr("disabled", false);
-            $("select.sort-type").attr("disabled", false);
-            UI.toggleSortByDropdown();
-        }
+        UI.toggleSortByDropdown();
+        UI.toggleTransitionLayout();
     });
 
     $("select.sort-type").change(function(){

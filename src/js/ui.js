@@ -29,37 +29,47 @@ export default class UI {
         switch ($("select.visualization").val()) {
             case "overview":
                 $("select.feature-x, select.feature-y").attr("disabled", true);
-                $("select.transition, select.transition-layout").attr("disabled", false);
+                $("select.transition").attr("disabled", false);
                 $("select.sort-type").attr("disabled", false);
                 break;
 
             case "barChart":
                 $("select.feature-y").attr("disabled", true);
                 $("select.feature-x").attr("disabled", false);
-                $("select.transition, select.transition-layout").attr("disabled", false);
+                $("select.transition").attr("disabled", false);
                 $("select.sort-type").attr("disabled", false);
                 break;
 
             case "scatterPlot":
                 $("select.feature-x, select.feature-y").attr("disabled", false);
-                $("select.transition, select.transition-layout").attr("disabled", false);
+                $("select.transition").attr("disabled", false);
                 $("select.sort-by, select.sort-type").attr("disabled", true);
                 break;
 
             case "dot":
                 $("select.feature-x, select.feature-y").attr("disabled", true);
-                $("select.transition, select.transition-layout").attr("disabled", false);
+                $("select.transition").attr("disabled", false);
                 $("select.sort-by, select.sort-type").attr("disabled", true);
                 break;
 
             default:
                 $("select.feature").attr("disabled", true);
-                $("select.transition, select.transition-layout").attr("disabled", true);
+                $("select.transition").attr("disabled", true);
                 $("select.sort-type").attr("disabled", true);
                 break;
         }
 
+        UI.toggleTransitionLayout();
         UI.toggleSortByDropdown();
+    }
+
+    static toggleTransitionLayout(){
+        let node = $("select.transition");
+        if(node.attr("disabled") || node.val() === "none"){
+            $("select.transition-layout").attr("disabled", true);
+        } else {
+            $("select.transition-layout").attr("disabled", false);
+        }
     }
 
     static toggleSortByDropdown(){

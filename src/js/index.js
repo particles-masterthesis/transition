@@ -193,8 +193,8 @@ function addEventListener(dataStore, canvas) {
         let value = $(this).val();
 
         if(value === "dot" || value === "psm" || value === "choropleth" || value == "cartogram"){
-            $("select.transition option").filter(function (index) {
-                return $(this).text() === "none";
+            $("select.transition-layout option").filter(function (index) {
+                return $(this).val() === "inPlace";
             }).prop("selected", true);
 
             UI.toggleSortByDropdown();

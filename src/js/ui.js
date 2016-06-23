@@ -31,6 +31,7 @@ export default class UI {
                 $("select.feature-x, select.feature-y").attr("disabled", true);
                 $("select.transition").attr("disabled", false);
                 $("select.sort-type").attr("disabled", false);
+                UI.toggleTransitionLayout();
                 break;
 
             case "barChart":
@@ -38,28 +39,31 @@ export default class UI {
                 $("select.feature-x").attr("disabled", false);
                 $("select.transition").attr("disabled", false);
                 $("select.sort-type").attr("disabled", false);
+                UI.toggleTransitionLayout();
                 break;
 
             case "scatterPlot":
                 $("select.feature-x, select.feature-y").attr("disabled", false);
                 $("select.transition").attr("disabled", false);
                 $("select.sort-by, select.sort-type").attr("disabled", true);
+                UI.toggleTransitionLayout();
                 break;
 
             case "dot":
                 $("select.feature-x, select.feature-y").attr("disabled", true);
                 $("select.transition").attr("disabled", false);
                 $("select.sort-by, select.sort-type").attr("disabled", true);
+                UI.toggleTransitionLayout();
                 break;
 
             default:
                 $("select.feature").attr("disabled", true);
-                $("select.transition").attr("disabled", true);
+                $("select.transition").attr("disabled", false);
+                $("select.transition-layout").attr("disabled", true);
                 $("select.sort-type").attr("disabled", true);
                 break;
         }
 
-        UI.toggleTransitionLayout();
         UI.toggleSortByDropdown();
     }
 

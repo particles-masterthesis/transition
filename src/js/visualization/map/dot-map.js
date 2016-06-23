@@ -53,6 +53,19 @@ export default class DotMap extends BaseMap {
         }
     }
 
+    transitionTo(x, y, scale, type) {
+        super.transitionTo(x,y,scale,type);
+
+        this.baseMap.svg.transition().duration(1/60)
+            .attr("transform", "translate(" + this.position.x + "," + this.position.y + ") scale(" + this.scale.x + "," + this.scale.y + ")");
+    }
+    nextStep() {
+        super.nextStep();
+
+        this.baseMap.svg.transition().duration(1/60)
+            .attr("transform", "translate(" + this.position.x + "," + this.position.y + ") scale(" + this.scale.x + "," + this.scale.y + ")");
+    }
+
     removeAllDomNodes(){
 
     }

@@ -262,6 +262,7 @@ export default class Canvas {
             animationCb,
             this.particles.sizeOfParticles
         );
+        this.visualization.hide(true, true);
 
         this.animationQueue.push(() => {
             this.minimizeOldVisualization(areParticlesNew, transitionType, transitionLayout);
@@ -269,7 +270,7 @@ export default class Canvas {
 
         this.animationQueue.push(() => {
             this.moveNewVisualization(areParticlesNew, transitionType, transitionLayout);
-            this.stage.addChild(this.visualization);
+            this.visualization.show(true, true);
             this.visualization.drawData(animationCb, areParticlesNew);
             this.moveParticlesDestination(areParticlesNew, transitionType, transitionLayout);
 
@@ -445,6 +446,11 @@ export default class Canvas {
             (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
 
             this.stage.removeChild(this.visualizationOld);
+
+            if(typeof this.visualizationOld.hide === "function" && this.visualization.constructor.name !== "DotMap"){
+                this.visualizationOld.transitionTo(0,0,1,"none");
+                this.visualizationOld.hide(true, true);
+            }
 
             let {height, width, ratio, yTranslate} = this.calculateTranslationLayoutValues(this.visualization);
             let amountOfFrames = this.particlesContainer.moveParticlesBack(

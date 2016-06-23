@@ -2,7 +2,7 @@ import "./helper";
 import $ from 'jquery';
 import jQuery from 'jquery';
 // export for others scripts to use
-window.$      = $;
+window.$ = $;
 window.jQuery = jQuery;
 
 require("./../../node_modules/jquery-csv/src/jquery.csv.js");
@@ -45,42 +45,46 @@ window.updateScreen = () => {
     canvas.stop();
 
     let upcomingVisualizationType = $("select.visualization").val();
-    let transitionType            = $("select.transition").val();
+    let transitionType = $("select.transition").val();
+    let transitionLayout = $("select.transition-layout").val();
 
     // if there was previous visualization
-    if(visualizationHistory.length){
+    if (visualizationHistory.length) {
         // check if it was anything with maps
         // and if the new visualization is another type than the last one
         let mapTypesWithDomNodes = ['dot', 'psm', 'choropleth', 'cartogram'];
-        if(
+        if (
             mapTypesWithDomNodes.indexOf(visualizationHistory[0].type) > -1 &&
             visualizationHistory[0].type !== upcomingVisualizationType
-        ){
-            if(
+        ) {
+            if (
                 transitionType === 'linear' &&
                 mapTypesWithDomNodes.indexOf(upcomingVisualizationType) > -1
-            ){
+            ) {
                 let promise = TM.animate(
                     visualizationHistory[0],
                     upcomingVisualizationType
                 );
 
                 promise
-                .then((_currentVisualization) => {
-                    visualizationHistory.unshift(_currentVisualization);
-                    currentVisualization = _currentVisualization.obj;
-                })
-                .catch((error) => {
-                    console.log('promise error');
-                });
+                    .then((_currentVisualization) => {
+                        visualizationHistory.unshift(_currentVisualization);
+                        currentVisualization = _currentVisualization.obj;
+                    })
+                    .catch((error) => {
+                        console.log('promise error');
+                    });
 
                 return;
             } else {
-                // remove all dom nodes
-                visualizationHistory[0].obj.removeAllDomNodes();
-
-                // hide svg and map
-                visualizationHistory[0].obj.hide(true, true);
+                if (visualizationHistory[0].type === "dot" && transitionType === "linear" && (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
+                    // Remove the dot map later
+                } else {
+                    // remove all dom nodes
+                    visualizationHistory[0].obj.removeAllDomNodes();
+                    // hide svg and map
+                    visualizationHistory[0].obj.hide(true, true);
+                }
             }
         }
     }
@@ -171,7 +175,7 @@ window.updateScreen = () => {
     canvas.render();
 };
 
-function addEventListener(dataStore, canvas){
+function addEventListener(dataStore, canvas) {
     $("select.feature-x").not(".sort-by").change(function () {
         dataStore.oldSelectionX = dataStore.currentSelection.x;
         dataStore.currentSelection.x = $(this).children(":selected")[0].innerHTML;
@@ -186,6 +190,17 @@ function addEventListener(dataStore, canvas){
     });
 
     $("select.visualization").change(function () {
+        let value = $(this).val();
+
+        if(value === "dot" || value === "psm" || value === "choropleth" || value == "cartogram"){
+            $("select.transition option").filter(function (index) {
+                return $(this).text() === "none";
+            }).prop("selected", true);
+
+            UI.toggleSortByDropdown();
+            UI.toggleTransitionLayout();
+        }
+
         UI.toggleFeatureDropdowns();
         canvas.prepareCanvas();
         window.updateScreen(dataStore, canvas);
@@ -196,11 +211,11 @@ function addEventListener(dataStore, canvas){
         UI.toggleTransitionLayout();
     });
 
-    $("select.sort-type").change(function(){
+    $("select.sort-type").change(function () {
         UI.toggleSortByDropdown();
     });
 
-    $("select.sort-by").change(function(){
+    $("select.sort-by").change(function () {
         let sortByFeature = $(this).children(":selected")[0].innerHTML;
         dataStore.changeSorting(sortByFeature);
         canvas.changeSorting(sortByFeature);

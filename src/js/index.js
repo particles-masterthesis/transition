@@ -192,7 +192,7 @@ function addEventListener(dataStore, canvas) {
     $("select.visualization").change(function () {
         let value = $(this).val();
 
-        if(value === "dot" || value === "psm" || value === "choropleth" || value == "cartogram"){
+        if(value === "psm" || value === "choropleth" || value == "cartogram"){
             $("select.transition-layout option").filter(function (index) {
                 return $(this).val() === "inPlace";
             }).prop("selected", true);

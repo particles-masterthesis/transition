@@ -285,3 +285,7 @@ Array.prototype.sortBy = function (feature, attribute) {
 
     }
 };
+
+String.prototype.toHex = function(){
+  return parseInt(this.replace("#", ""), 16);
+};

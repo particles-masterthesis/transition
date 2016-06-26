@@ -31,8 +31,14 @@ export default class Canvas {
             "speedPxPerFrame": 4,
             "arrivalSync": false,
             "shape": "rectangle",
-            "sizeOfParticles": 4        // Only for scatter-plot relevant
+            "sizeOfParticles": 4,        // Only for scatter-plot relevant
+            "color": "#4285f4",
+            "colorHover": "#34a853"
         };
+
+        // TODO nicht wundern, dass am anfang sich jetzt nicht mehr animiert, aber das liegt daran, weil immer noch bar für bar animiert wird
+        // TODO Hover über Items
+        // TODO Zentrieren von Partikeln um x y funktioniert im scatter nicht?
 
         this.height = window.innerHeight - 142; //windowH height - menu height - css-paddings
         this.width = window.innerWidth - 285; //windowH width - css-paddings
@@ -58,9 +64,6 @@ export default class Canvas {
         this.particlesContainer = new ParticlesContainer();
         this.particlesContainer.interactive = true;
         this.stage.addChild(this.particlesContainer);
-
-        // Layout during transition
-        this.isCleaningNecessary = false;
 
         this.animationQueue = new Queue();
     }
@@ -127,7 +130,7 @@ export default class Canvas {
 
     automaticallySortParticles(oldFeature) {
         // At the beginning there is now old feature and so no feature to sort by
-        if(!oldFeature){
+        if (!oldFeature) {
             return;
         }
 
@@ -155,9 +158,13 @@ export default class Canvas {
         this.visualizationOld = this.visualization ? this.visualization : null;
         this.visualization = new Overview(this.width, this.height, this.particlesContainer);
 
-        this.animationQueue.push(() => {
-            this.minimizeOldVisualization(areParticlesNew, transitionType, transitionLayout);
-        });
+        if (!areParticlesNew && this.visualizationOld && transitionType != "none" &&
+            (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
+
+            this.animationQueue.push(() => {
+                this.minimizeOldVisualization(areParticlesNew, transitionType, transitionLayout);
+            });
+        }
 
         this.animationQueue.push(() => {
             this.moveNewVisualization(areParticlesNew, transitionType, transitionLayout);
@@ -167,12 +174,20 @@ export default class Canvas {
 
             // After defining the destination we have to calculate the speed for the particles
             // so the reach at the same time their destination
-            if (this.particles.arrivalSync) this.particlesContainer.calculateSpeedArrivingSameTime();
+            // else we want to be sure that all particles have the speed given by the user
+            if (this.particles.arrivalSync) {
+                this.particlesContainer.calculateSpeedArrivingSameTime();
+            } else {
+                this.particlesContainer.setParticlesSpeed(this.particlesContainer.speedPxPerFrame);
+            }
         });
 
-        this.animationQueue.push(() => {
-            this.cleanLayout();
-        });
+        if (this.visualizationOld && transitionType != "none" &&
+            (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
+            this.animationQueue.push(() => {
+                this.cleanLayout();
+            });
+        }
 
         return this.visualization;
     }
@@ -191,9 +206,13 @@ export default class Canvas {
             title
         });
 
-        this.animationQueue.push(() => {
-            this.minimizeOldVisualization(areParticlesNew, transitionType, transitionLayout);
-        });
+        if (!areParticlesNew && this.visualizationOld && transitionType != "none" &&
+            (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
+
+            this.animationQueue.push(() => {
+                this.minimizeOldVisualization(areParticlesNew, transitionType, transitionLayout);
+            });
+        }
 
         this.animationQueue.push(() => {
             this.moveNewVisualization(areParticlesNew, transitionType, transitionLayout);
@@ -203,12 +222,20 @@ export default class Canvas {
 
             // After defining the destination we have to calculate the speed for the particles
             // so the reach at the same time their destination
-            if (this.particles.arrivalSync) this.particlesContainer.calculateSpeedArrivingSameTime();
+            // else we want to be sure that all particles have the speed given by the user
+            if (this.particles.arrivalSync) {
+                this.particlesContainer.calculateSpeedArrivingSameTime();
+            } else {
+                this.particlesContainer.setParticlesSpeed(this.particlesContainer.speedPxPerFrame);
+            }
         });
 
-        this.animationQueue.push(() => {
-            this.cleanLayout();
-        });
+        if (this.visualizationOld && transitionType != "none" &&
+            (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
+            this.animationQueue.push(() => {
+                this.cleanLayout();
+            });
+        }
 
         return this.visualization;
     }
@@ -226,9 +253,13 @@ export default class Canvas {
             sizeParticles: this.particles.sizeOfParticles
         });
 
-        this.animationQueue.push(() => {
-            this.minimizeOldVisualization(areParticlesNew, transitionType, transitionLayout);
-        });
+        if (!areParticlesNew && this.visualizationOld && transitionType != "none" &&
+            (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
+
+            this.animationQueue.push(() => {
+                this.minimizeOldVisualization(areParticlesNew, transitionType, transitionLayout);
+            });
+        }
 
         this.animationQueue.push(() => {
             this.moveNewVisualization(areParticlesNew, transitionType, transitionLayout);
@@ -238,12 +269,20 @@ export default class Canvas {
 
             // After defining the destination we have to calculate the speed for the particles
             // so the reach at the same time their destination
-            if (this.particles.arrivalSync) this.particlesContainer.calculateSpeedArrivingSameTime();
+            // else we want to be sure that all particles have the speed given by the user
+            if (this.particles.arrivalSync) {
+                this.particlesContainer.calculateSpeedArrivingSameTime();
+            } else {
+                this.particlesContainer.setParticlesSpeed(this.particlesContainer.speedPxPerFrame);
+            }
         });
 
-        this.animationQueue.push(() => {
-            this.cleanLayout();
-        });
+        if (this.visualizationOld && transitionType != "none" &&
+            (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
+            this.animationQueue.push(() => {
+                this.cleanLayout();
+            });
+        }
 
         return this.visualization;
     }
@@ -264,9 +303,13 @@ export default class Canvas {
         );
         this.visualization.hide(true, true);
 
-        this.animationQueue.push(() => {
-            this.minimizeOldVisualization(areParticlesNew, transitionType, transitionLayout);
-        });
+        if (!areParticlesNew && this.visualizationOld && transitionType != "none" &&
+            (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
+
+            this.animationQueue.push(() => {
+                this.minimizeOldVisualization(areParticlesNew, transitionType, transitionLayout);
+            });
+        }
 
         this.animationQueue.push(() => {
             this.moveNewVisualization(areParticlesNew, transitionType, transitionLayout);
@@ -276,12 +319,20 @@ export default class Canvas {
 
             // After defining the destination we have to calculate the speed for the particles
             // so the reach at the same time their destination
-            if (this.particles.arrivalSync) this.particlesContainer.calculateSpeedArrivingSameTime();
+            // else we want to be sure that all particles have the speed given by the user
+            if (this.particles.arrivalSync) {
+                this.particlesContainer.calculateSpeedArrivingSameTime();
+            } else {
+                this.particlesContainer.setParticlesSpeed(this.particlesContainer.speedPxPerFrame);
+            }
         });
 
-        this.animationQueue.push(() => {
-            this.cleanLayout();
-        });
+        if (this.visualizationOld && transitionType != "none" &&
+            (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
+            this.animationQueue.push(() => {
+                this.cleanLayout();
+            });
+        }
 
         return this.visualization;
     }
@@ -358,35 +409,31 @@ export default class Canvas {
         return this.visualization;
     }
 
-    minimizeOldVisualization(areParticlesNew, transitionType, transitionLayout){
-        if (!areParticlesNew && this.visualizationOld && transitionType != "none") {
-            let {height, width, ratio, yTranslate} = this.calculateTranslationLayoutValues(this.visualizationOld);
+    minimizeOldVisualization(areParticlesNew, transitionType, transitionLayout) {
+        let {height, width, ratio, yTranslate} = this.calculateTranslationLayoutValues(this.visualizationOld);
 
-            if (transitionLayout === "juxtaposition") {
-                this.moveVisualization(this.visualizationOld, "left", "linear");
-                let amountOfFrames = this.particlesContainer.moveParticles("left", "linear", {
-                    "x": this.visualizationOld.destination.x,
-                    "y": this.visualizationOld.destination.y
-                }, yTranslate, ratio);
-                this.visualizationOld.calculateSpeed(amountOfFrames);
-            } else if (transitionLayout === "stacked") {
-                this.moveVisualization(this.visualizationOld, "top", "linear");
-                let amountOfFrames = this.particlesContainer.moveParticles("top", "linear", {
-                    "x": this.visualizationOld.destination.x,
-                    "y": this.visualizationOld.destination.y
-                }, yTranslate, ratio);
-                this.visualizationOld.calculateSpeed(amountOfFrames);
-            }
-
-            this.isCleaningNecessary = true;
-
-            // After defining the destination we have to calculate the speed for the particles
-            // so the reach at the same time their destination
-            if (this.particles.arrivalSync) this.particlesContainer.calculateSpeedArrivingSameTime();
+        if (transitionLayout === "juxtaposition") {
+            this.moveVisualization(this.visualizationOld, "left", "linear");
+            let amountOfFrames = this.particlesContainer.moveParticles("left", "linear", {
+                "x": this.visualizationOld.destination.x,
+                "y": this.visualizationOld.destination.y
+            }, yTranslate, ratio);
+            this.visualizationOld.calculateSpeed(amountOfFrames);
+        } else if (transitionLayout === "stacked") {
+            this.moveVisualization(this.visualizationOld, "top", "linear");
+            let amountOfFrames = this.particlesContainer.moveParticles("top", "linear", {
+                "x": this.visualizationOld.destination.x,
+                "y": this.visualizationOld.destination.y
+            }, yTranslate, ratio);
+            this.visualizationOld.calculateSpeed(amountOfFrames);
         }
+
+        // After defining the destination we have to calculate the speed for the particles
+        // so the reach at the same time their destination
+        if (this.particles.arrivalSync) this.particlesContainer.calculateSpeedArrivingSameTime();
     }
 
-    moveNewVisualization(areParticlesNew, transitionType, transitionLayout){
+    moveNewVisualization(areParticlesNew, transitionType, transitionLayout) {
         if (!areParticlesNew && this.visualizationOld && transitionType != "none") {
             if (transitionLayout === "juxtaposition") {
                 this.moveVisualization(this.visualization, "right", "none");
@@ -396,7 +443,7 @@ export default class Canvas {
         }
     }
 
-    moveParticlesDestination(areParticlesNew, transitionType, transitionLayout){
+    moveParticlesDestination(areParticlesNew, transitionType, transitionLayout) {
         if (!areParticlesNew && this.visualizationOld && transitionType != "none" &&
             (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
 
@@ -416,7 +463,7 @@ export default class Canvas {
 
     removeVisualization() {
         this.stage.removeChild(this.visualization);
-        if(this.visualizationOld) this.stage.removeChild(this.visualizationOld);
+        if (this.visualizationOld) this.stage.removeChild(this.visualizationOld);
     }
 
     removeParticles() {
@@ -435,38 +482,28 @@ export default class Canvas {
     }
 
     cleanLayout() {
-        if (!this.isCleaningNecessary) {
-            return;
-        }
-
         let transitionType = $("select.transition").val();
         let transitionLayout = $("select.transition-layout").val();
 
-        if (this.visualizationOld && transitionType != "none" &&
-            (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
+        this.stage.removeChild(this.visualizationOld);
 
-            this.stage.removeChild(this.visualizationOld);
-
-            if(typeof this.visualizationOld.hide === "function" && this.visualization.constructor.name !== "DotMap"){
-                this.visualizationOld.transitionTo(0,0,1,"none");
-                this.visualizationOld.hide(true, true);
-            }
-
-            let {height, width, ratio, yTranslate} = this.calculateTranslationLayoutValues(this.visualization);
-            let amountOfFrames = this.particlesContainer.moveParticlesBack(
-                this.width,
-                this.height,
-                transitionLayout === "juxtaposition" ? "right" : "bottom",
-                transitionType,
-                width,
-                yTranslate,
-                ratio
-            );
-            this.moveVisualization(this.visualization, "default", "linear");
-            this.visualization.calculateSpeed(amountOfFrames);
+        if (typeof this.visualizationOld.hide === "function" && this.visualization.constructor.name !== "DotMap") {
+            this.visualizationOld.transitionTo(0, 0, 1, "none");
+            this.visualizationOld.hide(true, true);
         }
 
-        this.isCleaningNecessary = false;
+        let {height, width, ratio, yTranslate} = this.calculateTranslationLayoutValues(this.visualization);
+        let amountOfFrames = this.particlesContainer.moveParticlesBack(
+            this.width,
+            this.height,
+            transitionLayout === "juxtaposition" ? "right" : "bottom",
+            transitionType,
+            width,
+            yTranslate,
+            ratio
+        );
+        this.moveVisualization(this.visualization, "default", "linear");
+        this.visualization.calculateSpeed(amountOfFrames);
     }
 
     reset() {

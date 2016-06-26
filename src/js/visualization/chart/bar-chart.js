@@ -21,10 +21,6 @@ export default class BarChart extends Chart {
 
         this.options = options;
 
-        // It easier and better for performance to just hide the particles behind a graphic
-        // then to set every particles alpha to 0
-        this.overlayBars = new PIXI.Graphics();
-
         let {uniqueValues, maxAppearance} = this.analyzeFeature(this.options.schema, this.options.features.x);
         // have to calculate it before drawing also because the attribute heightVisualization is new calculated
         let {size, particlesPerRow, widthAreaPerValue, marginBar, blankParticlesHighestBar} = this.calculateValues(uniqueValues, maxAppearance);
@@ -205,6 +201,7 @@ export default class BarChart extends Chart {
                 this.particles[i].alpha = 1;
             }
 
+            this.particles[i].oldBar = this.particles[i].bar === 0 || this.particles[i].bar ? this.particles[i].bar : null;
             this.particles[i].bar = values.indexOf(uniqueValue);
             this.particles[i].alpha = 1;
 
@@ -364,11 +361,6 @@ export default class BarChart extends Chart {
         this.addChild(ticks);
     }
 
-    /**
-     * Add Labels to the diagram
-     * @param features
-     * @param title
-     */
     drawLabels(features, title) {
         const xLabel = new PIXI.Text(features.x, {
             font: "14px Arial"
@@ -394,5 +386,24 @@ export default class BarChart extends Chart {
         titleLabel.x = this._width / 2;
         titleLabel.y = this._height - this.padding - this.heightVisualization - this.padding / 2;
         this.addChild(titleLabel);
+    }
+
+    drawAxes() {
+        const axes = new PIXI.Graphics();
+        axes.lineStyle(1, 0x111111, 1);
+
+        // X
+        // From bottom left to the right and to the bottom
+        axes.moveTo(this.padding - 10, this._height - this.padding);
+        axes.lineTo(this.widthVisualization + this.padding, this._height - this.padding);
+        axes.lineTo(this.widthVisualization + this.padding, this._height - this.padding + 10);
+
+        // Y
+        // From bottom left to top and to the left
+        axes.moveTo(this.padding, this._height - this.padding + 10);
+        axes.lineTo(this.padding, this._height - this.padding - this.heightVisualization);
+        axes.lineTo(this.padding - 10, this._height - this.padding - this.heightVisualization);
+
+        this.addChild(axes);
     }
 }

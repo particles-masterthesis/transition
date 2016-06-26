@@ -4,28 +4,93 @@ export default class ParticlesContainer extends PIXI.Container {
     constructor() {
         super();
 
-        this.hasPriorityChanged = false;
+        this.hasHighPriorityBar = false;
         this.isAnimating = false;
         this.speedPxPerFrame = 2;
         this.amountOfFrames = 0;
         this.isThisPreparation = false;
+
+        // Bar chart
+        this.typeOfViz = "";
+        this.animatingPerBar = true;
+        this.currentBarIndex = 0;
+        this.amountOfBars = 0;
+    }
+
+    nextStep() {
+        if (!this.isAnimating) {
+            return false;
+        }
+
+        let particlesReachedDestinations = true;
+        let isBarFinished = true;
+        let particleReachedDestination;
+        let particle;
+
+        if (this.hasHighPriorityBar && !this.isThisPreparation) {
+            for (let i = 0; i < this.children.length; i++) {
+                particle = this.getChildAt(i);
+
+                if (particle.priority === 1) {
+                    particleReachedDestination = !particle.animate();
+
+                    if (particleReachedDestination === false) {
+                        particlesReachedDestinations = false;
+                    }
+                }
+            }
+
+            if (particlesReachedDestinations) {
+                this.hasHighPriorityBar = false;
+            }
+        } else {
+            for (let i = 0; i < this.children.length; i++) {
+
+                let child = this.getChildAt(i);
+
+                // Animating bar chart and bar by bar
+                if(this.animatingPerBar && !this.isThisPreparation){
+                    if(child.oldBar === this.currentBarIndex) {
+                        particleReachedDestination = !child.animate();
+                        if (particleReachedDestination === false) {
+                            isBarFinished = false;
+                            particlesReachedDestinations = false;
+                        }
+                    }
+
+                    if(this.amountOfBars < child.oldBar){
+                        this.amountOfBars = child.oldBar;
+                    }
+                }
+                // Animating everything else
+                else {
+                    particleReachedDestination = !child.animate();
+                    if (particleReachedDestination === false) {
+                        particlesReachedDestinations = false;
+                    }
+                }
+            }
+
+            // Bar chart
+            if(isBarFinished && this.amountOfBars !== this.currentBarIndex){
+                particlesReachedDestinations = false;
+                this.currentBarIndex++;
+            }
+
+            if (particlesReachedDestinations) {
+                this.isAnimating = false;
+                this.currentBarIndex = 0;
+                this.isThisPreparation = false;
+            }
+        }
+
+        return this.isAnimating;
     }
 
     createParticles(dataset, options) {
         this.speedPxPerFrame = options.speedPxPerFrame;
 
         if (this.children.length === 0) {
-
-            let texture, textureHover;
-
-            if (options.shape === "rectangle") {
-                texture = PIXI.Texture.fromImage("dist/img/particle.png");
-                textureHover = PIXI.Texture.fromImage("dist/img/particle_hover.png");
-            } else {
-                texture = PIXI.Texture.fromImage("dist/img/particle_circle.png");
-                textureHover = PIXI.Texture.fromImage("dist/img/particle_circle_hover.png");
-            }
-
             let callbackAdd = data => () => this.showParticleDetails(data);
             let callbackRemove = () => () => {
                 if (document.getElementById("dataRow")) {
@@ -34,7 +99,7 @@ export default class ParticlesContainer extends PIXI.Container {
             };
 
             for (let i = 0; i < dataset.length; i++) {
-                let sprite = new Particle(texture, textureHover, dataset[i], 0, 0, options.sizeOfParticles, options.speedPxPerFrame);
+                let sprite = new Particle(dataset[i], 0, 0, options.sizeOfParticles, options.speedPxPerFrame, options.shape, options.color.toHex());
                 sprite.on("mouseover", callbackAdd(sprite.data));
                 sprite.on("mouseout", callbackRemove());
                 this.addChild(sprite);
@@ -80,50 +145,21 @@ export default class ParticlesContainer extends PIXI.Container {
         document.body.appendChild(table);
     }
 
-    startAnimation() {
-        this.isAnimating = true;
+    setParticlesColor(color){
+        color = color.toHex();
+        for (let i = 0; i < this.children.length; i++) {
+            this.children[i].color = color;
+        }
     }
 
-    nextStep() {
-        if (!this.isAnimating) {
-            return false;
+    redraw(){
+        for (let i = 0; i < this.children.length; i++) {
+            this.children[i].redraw();
         }
+    }
 
-        let particlesReachedDestinations = true;
-        let particleReachedDestination;
-        let particle;
-
-        if (this.hasPriorityChanged && !this.isThisPreparation) {
-            for (let i = 0; i < this.children.length; i++) {
-                particle = this.getChildAt(i);
-
-                if (particle.priority === 1) {
-                    particleReachedDestination = !particle.animate();
-
-                    if (particlesReachedDestinations === true && particleReachedDestination === false) {
-                        particlesReachedDestinations = false;
-                    }
-                }
-            }
-
-            if (particlesReachedDestinations) {
-                this.hasPriorityChanged = false;
-            }
-        } else {
-            for (let i = 0; i < this.children.length; i++) {
-                particleReachedDestination = !this.getChildAt(i).animate();
-                if (particleReachedDestination === false && particlesReachedDestinations === true) {
-                    particlesReachedDestinations = false;
-                }
-            }
-
-            if (particlesReachedDestinations) {
-                this.isAnimating = false;
-                this.isThisPreparation = false;
-            }
-        }
-
-        return this.isAnimating;
+    startAnimation() {
+        this.isAnimating = true;
     }
 
     resetHighPriorityParticles() {
@@ -141,7 +177,7 @@ export default class ParticlesContainer extends PIXI.Container {
             }
         }
 
-        this.hasPriorityChanged = true;
+        this.hasHighPriorityBar = true;
     }
 
     setParticlesSpeed(speed) {
@@ -278,8 +314,6 @@ export default class ParticlesContainer extends PIXI.Container {
                     transition
                 );
             }
-
-            return this.calculateSpeedArrivingSameTime();
         } else if (from === "bottom") {
             let particle;
             for (let i = 0; i < this.children.length; i++) {
@@ -295,8 +329,9 @@ export default class ParticlesContainer extends PIXI.Container {
                     transition
                 );
             }
-
-            return this.calculateSpeedArrivingSameTime();
         }
+
+        this.isThisPreparation = true;
+        return this.calculateSpeedArrivingSameTime();
     }
 }

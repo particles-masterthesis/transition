@@ -1,15 +1,15 @@
 import Visualization from "./visualization";
 import "pixi.js";
 
-export default class Particle extends PIXI.Sprite {
+export default class Particle extends PIXI.Graphics {
 
-    constructor(texture, textureHover, data, x, y, size, speed) {
-        super(texture);
+    constructor(data, x, y, size, speed, shape, color) {
+        super();
 
-        this.textureDefault = texture;
-        this.textureHover = textureHover;
+        this.color = color;
+        this.size = size;
+        this.redraw();
 
-        this.width = this.height = size;
         this.margin = 1;
         this.alpha = 1;
 
@@ -25,8 +25,15 @@ export default class Particle extends PIXI.Sprite {
 
         this.data = data;
         this.id = this.data["Row ID"];
+        this.shape = shape;
 
         this.addClickListener();
+    }
+
+    redraw(){
+        this.lineStyle(0, 0xFFFFFF, 1);
+        this.beginFill(this.color, 1);
+        this.drawRect(0, 0, this.size, this.size);
     }
 
     transitionTo(x, y, width, height, type) {
@@ -35,8 +42,7 @@ export default class Particle extends PIXI.Sprite {
                 this.isAnimating = false;
 
                 this.setPosition(x, y);
-                this.setDestination(x,y);
-
+                this.setDestination(x, y);
                 this.setSize(width, height);
                 this.setAimedSize(width, height);
                 break;
@@ -80,17 +86,15 @@ export default class Particle extends PIXI.Sprite {
                 this.setSize(this.width + deltaX * this.distanceRatio, this.height + deltaY * this.distanceRatio);
             }
         }
-        // console.log("\n\n\nALPHA ANIMATION");
-        // console.log(this.aimedAlpha);
-        // console.log(this.alpha);
-        if(
+
+        if (
             (this.aimedAlpha !== null && this.aimedAlpha !== undefined) &&
             this.aimedAlpha !== this.alpha
-        ){
-            if(Math.abs(this.alpha - this.aimedAlpha) < this.speed * 2 / 100){
+        ) {
+            if (Math.abs(this.alpha - this.aimedAlpha) < this.speed * 2 / 100) {
                 this.alpha = this.aimedAlpha;
             }
-            else if(this.aimedAlpha < this.alpha){
+            else if (this.aimedAlpha < this.alpha) {
                 this.alpha -= this.speed * 2 / 100;
             } else {
                 this.alpha += this.speed * 2 / 100;
@@ -141,11 +145,11 @@ export default class Particle extends PIXI.Sprite {
         this.buttonMode = true;
 
         this.on("mouseover", function (ev) {
-            this.texture = this.textureHover;
+            //TODO this.texture = this.textureHover;
         }.bind(this));
 
         this.on("mouseout", function (ev) {
-            this.texture = this.textureDefault;
+            //TODO this.texture = this.textureDefault;
         }.bind(this));
     }
 
@@ -155,5 +159,4 @@ export default class Particle extends PIXI.Sprite {
         if (type === 'out') this.aimedAlpha = 0;
         return this;
     }
-
 }

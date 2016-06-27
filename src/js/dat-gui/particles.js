@@ -15,7 +15,7 @@ export default function (dataStore, ui, canvas, update) {
     });
 
     folder.addColor(canvas.particles, "color").onChange((value) => {
-        canvas.particlesContainer.setParticlesColor(value);
+        canvas.particlesContainer.setColorOfParticles(value);
         canvas.particlesContainer.redraw();
     });
 

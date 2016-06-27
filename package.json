@@ -61,6 +61,7 @@
     "bootstrap": "^3.3.6",
     "browser-sync": "latest",
     "browserify": "latest",
+    "color-js": "^1.0.3",
     "csvtojson": "^0.5.12",
     "exdat": "github:anvaka/dat.gui",
     "fast-csv": "^2.0.0",

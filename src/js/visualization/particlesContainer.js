@@ -1,4 +1,5 @@
 import Particle from "./particle";
+import Color from "color-js";
 
 export default class ParticlesContainer extends PIXI.Container {
     constructor() {
@@ -15,6 +16,7 @@ export default class ParticlesContainer extends PIXI.Container {
         this.animatingPerBar = true;
         this.currentBarIndex = 0;
         this.amountOfBars = 0;
+        this.barsDifferentColors = false;
     }
 
     nextStep() {
@@ -151,11 +153,38 @@ export default class ParticlesContainer extends PIXI.Container {
         document.body.appendChild(table);
     }
 
-    setParticlesColor(color){
+    setColorOfParticles(color){
         color = color.toHex();
         for (let i = 0; i < this.children.length; i++) {
             this.children[i].color = color;
         }
+    }
+
+    setColorOfBars(){
+        let amountOfBars = 0;
+        for (let i = 0; i < this.children.length; i++) {
+            if(amountOfBars < this.children[i].bar){
+                amountOfBars = this.children[i].bar;
+            }
+        }
+
+        // because child.bar starts at 0 and not at 1
+        amountOfBars++;
+
+        let colors = [];
+        var currentColor = Color("#00FFFF").desaturateByRatio(0.5).darkenByRatio(0.1);
+
+        for (let i = 0; i < amountOfBars; i++) {
+            let angle = 360/amountOfBars*i;
+            colors.push(currentColor.shiftHue(angle).toCSS().toHex());
+        }
+
+        for (let i = 0; i < this.children.length; i++) {
+            this.children[i].aimedColor = colors[this.children[i].bar];
+            this.children[i].isAnimating = true;
+        }
+
+        this.startAnimation();
     }
 
     redraw(){

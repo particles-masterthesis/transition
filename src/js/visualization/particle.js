@@ -145,11 +145,13 @@ export default class Particle extends PIXI.Graphics {
         this.buttonMode = true;
 
         this.on("mouseover", function (ev) {
-            //TODO this.texture = this.textureHover;
+            this.color = this.color + 10000;
+            this.redraw();
         }.bind(this));
 
         this.on("mouseout", function (ev) {
-            //TODO this.texture = this.textureDefault;
+            this.color = this.color - 10000;
+            this.redraw();
         }.bind(this));
     }
 

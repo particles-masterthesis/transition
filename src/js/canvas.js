@@ -36,10 +36,6 @@ export default class Canvas {
             "colorHover": "#34a853"
         };
 
-        // TODO nicht wundern, dass am anfang sich jetzt nicht mehr animiert, aber das liegt daran, weil immer noch bar für bar animiert wird
-        // TODO Hover über Items
-        // TODO Zentrieren von Partikeln um x y funktioniert im scatter nicht?
-
         this.height = window.innerHeight - 142; //windowH height - menu height - css-paddings
         this.width = window.innerWidth - 285; //windowH width - css-paddings
 

@@ -49,7 +49,12 @@ export default class ParticlesContainer extends PIXI.Container {
                 let child = this.getChildAt(i);
 
                 // Animating bar chart and bar by bar
-                if(this.animatingPerBar && !this.isThisPreparation){
+                if(
+                    window.canvas.visualizationOld &&
+                    window.canvas.visualizationOld.constructor.name == "BarChart" &&
+                    this.animatingPerBar &&
+                    !this.isThisPreparation
+                ){
                     if(child.oldBar === this.currentBarIndex) {
                         particleReachedDestination = !child.animate();
                         if (particleReachedDestination === false) {
@@ -80,6 +85,7 @@ export default class ParticlesContainer extends PIXI.Container {
             if (particlesReachedDestinations) {
                 this.isAnimating = false;
                 this.currentBarIndex = 0;
+                this.amountOfBars = 0;
                 this.isThisPreparation = false;
             }
         }

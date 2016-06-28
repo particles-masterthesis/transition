@@ -28,7 +28,7 @@ export default class Canvas {
         this.requestFrameID = null;
 
         this.particles = {
-            "speedPxPerFrame": 4,
+            "speedPxPerFrame": 15,
             "arrivalSync": false,
             "shape": "rectangle",
             "sizeOfParticles": 4,       // Only for scatter-plot relevant
@@ -145,7 +145,7 @@ export default class Canvas {
         this.visualization.drawData(this.useBars, false);
     }
 
-    drawParticles(dataset) {
+    drawOverview(dataset) {
         let transitionType = $("select.transition").val();
         let transitionLayout = $("select.transition-layout").val();
         let areParticlesNew = this.particlesContainer.createParticles(dataset, this.particles);
@@ -472,7 +472,11 @@ export default class Canvas {
 
     removeVisualization() {
         this.stage.removeChild(this.visualization);
-        if (this.visualizationOld) this.stage.removeChild(this.visualizationOld);
+        this.visualization = null;
+        if (this.visualizationOld){
+            this.stage.removeChild(this.visualizationOld);
+            this.visualizationOld = null;
+        }
     }
 
     removeParticles() {

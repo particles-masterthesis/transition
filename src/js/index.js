@@ -160,7 +160,7 @@ window.updateScreen = () => {
             break;
 
         case "overview":
-            currentVisualization = canvas.drawParticles(dataStore.data);
+            currentVisualization = canvas.drawOverview(dataStore.data);
             visualizationHistory.unshift({
                 'type': 'overview',
                 'obj': currentVisualization

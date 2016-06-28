@@ -11,8 +11,7 @@ export default class ParticlesContainer extends PIXI.Container {
         this.isThisPreparation = false;
 
         // Bar chart
-        this.typeOfViz = "";
-        this.animatingPerBar = true;
+        this.animatePerBar = true;
         this.currentBarIndex = 0;
         this.amountOfBars = 0;
         this.animateBarsColored = false;
@@ -53,7 +52,7 @@ export default class ParticlesContainer extends PIXI.Container {
                 if(
                     window.canvas.visualizationOld &&
                     window.canvas.visualizationOld.constructor.name == "BarChart" &&
-                    this.animatingPerBar &&
+                    this.animatePerBar &&
                     !this.isThisPreparation
                 ){
                     if(child.oldBar === this.currentBarIndex) {

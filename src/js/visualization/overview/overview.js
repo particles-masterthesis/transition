@@ -30,7 +30,7 @@ export default class Overview extends Visualization {
             this.particles[i].alpha = 1;
 
             if (newParticles) {
-                this.particles[i].setPosition(x, y).setSize(size - this.particles[i].margin, size - this.particles[i].margin);
+                this.particles[i].transitionTo(x, y, size - this.particles[i].margin, size - this.particles[i].margin, "none");
             } else {
                 this.particles[i].transitionTo(x, y, size - this.particles[i].margin, size - this.particles[i].margin, transitionType);
             }

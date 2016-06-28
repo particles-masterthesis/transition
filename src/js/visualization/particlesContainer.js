@@ -1,5 +1,4 @@
 import Particle from "./particle";
-import Color from "color-js";
 
 export default class ParticlesContainer extends PIXI.Container {
     constructor() {
@@ -16,7 +15,7 @@ export default class ParticlesContainer extends PIXI.Container {
         this.animatingPerBar = true;
         this.currentBarIndex = 0;
         this.amountOfBars = 0;
-        this.barsDifferentColors = false;
+        this.animateBarsColored = false;
     }
 
     nextStep() {
@@ -107,7 +106,7 @@ export default class ParticlesContainer extends PIXI.Container {
             };
 
             for (let i = 0; i < dataset.length; i++) {
-                let sprite = new Particle(dataset[i], 0, 0, options.sizeOfParticles, options.speedPxPerFrame, options.shape, options.color.toHex());
+                let sprite = new Particle(dataset[i], 0, 0, options.sizeOfParticles, options.speedPxPerFrame, options.shape, options.color);
                 sprite.on("mouseover", callbackAdd(sprite.data));
                 sprite.on("mouseout", callbackRemove());
                 this.addChild(sprite);
@@ -154,7 +153,7 @@ export default class ParticlesContainer extends PIXI.Container {
     }
 
     setColorOfParticles(color){
-        color = color.toHex();
+        color = color.RGBToHSL();
         for (let i = 0; i < this.children.length; i++) {
             this.children[i].color = color;
         }
@@ -171,20 +170,19 @@ export default class ParticlesContainer extends PIXI.Container {
         // because child.bar starts at 0 and not at 1
         amountOfBars++;
 
-        let colors = [];
-        var currentColor = Color("#00FFFF").desaturateByRatio(0.5).darkenByRatio(0.1);
+        var startColor = "#00FFFF".RGBToHSL();
+        startColor[1] = startColor[1] - 0.2;        // less saturation
+        startColor[2] = startColor[2] + 0.2 ;       // more light
 
+        let colors = [];
         for (let i = 0; i < amountOfBars; i++) {
-            let angle = 360/amountOfBars*i;
-            colors.push(currentColor.shiftHue(angle).toCSS().toHex());
+            let hue = 1/amountOfBars*i;
+            colors.push([hue, startColor[1], startColor[2]]);
         }
 
         for (let i = 0; i < this.children.length; i++) {
-            this.children[i].aimedColor = colors[this.children[i].bar];
-            this.children[i].isAnimating = true;
+            this.children[i].color = colors[this.children[i].bar];
         }
-
-        this.startAnimation();
     }
 
     redraw(){

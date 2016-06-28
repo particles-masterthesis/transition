@@ -286,6 +286,89 @@ Array.prototype.sortBy = function (feature, attribute) {
     }
 };
 
-String.prototype.toHex = function(){
-  return parseInt(this.replace("#", ""), 16);
+String.prototype.toHex = function () {
+    return parseInt(this.replace("#", ""), 16);
 };
+
+
+/**
+ * Converts an HSL color value to RGB. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes h, s, and l are contained in the set [0, 1] and
+ * returns r, g, and b in the set [0, 255].
+ * Source: http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+ *
+ * @return  {Number}          The Hex representation
+ */
+
+Array.prototype.HSLToHex = function () {
+    var r, g, b;
+
+    if (this[1] === 0) {
+        r = g = b = this[2]; // achromatic
+    } else {
+        var q = this[2] < 0.5 ? this[2] * (1 + this[1]) : this[2] + this[1] - this[2] * this[1];
+        var p = 2 * this[2] - q;
+        r = hue2rgb(p, q, this[0] + 1 / 3);
+        g = hue2rgb(p, q, this[0]);
+        b = hue2rgb(p, q, this[0] - 1 / 3);
+    }
+
+    // -1 because we start at 0 not at 1
+    return Math.round(r * 256) * 256 * 256 + Math.round(g * 256) * 256 + Math.round(b * 256) - 1;
+};
+
+var hue2rgb = function (p, q, t) {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+};
+
+/**
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ * Source: http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+ *
+ * @this    {String}          z.B. "#FFBBAA" or "001123"
+ * @return  {Array}           The HSL representation
+ */
+
+String.prototype.RGBToHSL = function () {
+    let string = this.replace("#", "");
+    let r = parseInt(string.slice(0, 2), 16);
+    let g = parseInt(string.slice(2, 4), 16);
+    let b = parseInt(string.slice(4, 6), 16);
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if (max == min) {
+        h = s = 0; // achromatic
+    } else {
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+            case r:
+                h = (g - b) / d + (g < b ? 6 : 0);
+                break;
+            case g:
+                h = (b - r) / d + 2;
+                break;
+            case b:
+                h = (r - g) / d + 4;
+                break;
+        }
+        h /= 6;
+    }
+
+    return [h, s, l];
+};
+

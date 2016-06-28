@@ -212,11 +212,10 @@ export default class BarChart extends Chart {
 
             x = this.padding + marginBar + size * uniqueValues[uniqueValue].particleNumberInRow + values.indexOf(uniqueValue) * widthAreaPerValue;
 
-
             let sizeToDraw = size - this.particles[i].margin;
 
             if (areParticlesNew) {
-                this.particles[i].setPosition(x, y).setSize(sizeToDraw, sizeToDraw);
+                this.particles[i].transitionTo(x, y, sizeToDraw, sizeToDraw, "none");
             } else {
                 this.particles[i].transitionTo(x, y, sizeToDraw, sizeToDraw, transitionType);
             }

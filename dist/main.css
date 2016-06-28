@@ -6776,6 +6776,26 @@ body {
 .dg {
   z-index: 6 !important;
 }
+.dg .c {
+  width: 55% !important;
+}
+.dg .c select {
+  margin-top: 0px !important;
+}
+.dg .c input[type=checkbox] {
+  margin-top: 5px !important;
+  margin-left: -1px !important;
+}
+.dg .c input[type=text] {
+  height: 19px;
+  line-height: 19px;
+}
+.dg .property-name {
+  width: 45% !important;
+}
+.dg .slider {
+  margin-left: 0px !important;
+}
 .dg.main.a {
   margin: 0;
 }

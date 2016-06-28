@@ -31,9 +31,8 @@ export default class Canvas {
             "speedPxPerFrame": 4,
             "arrivalSync": false,
             "shape": "rectangle",
-            "sizeOfParticles": 4,        // Only for scatter-plot relevant
-            "color": "#4285f4",
-            "colorHover": "#34a853"
+            "sizeOfParticles": 4,       // Only for scatter-plot relevant
+            "color": "#4285f4"          // Needed only for dat-gui colorpicker
         };
 
         this.height = window.innerHeight - 142; //windowH height - menu height - css-paddings
@@ -210,6 +209,13 @@ export default class Canvas {
             });
         }
 
+        if (transitionType != "none" && canvas.particlesContainer.animateBarsColored) {
+            this.animationQueue.push(() => {
+                canvas.particlesContainer.setColorOfBars();
+                canvas.particlesContainer.redraw();
+            });
+        }
+
         this.animationQueue.push(() => {
             this.moveNewVisualization(areParticlesNew, transitionType, transitionLayout);
             this.stage.addChild(this.visualization);
@@ -230,6 +236,13 @@ export default class Canvas {
             (transitionLayout === "juxtaposition" || transitionLayout === "stacked")) {
             this.animationQueue.push(() => {
                 this.cleanLayout();
+            });
+        }
+
+        if (transitionType != "none" && canvas.particlesContainer.animateBarsColored) {
+            this.animationQueue.push(() => {
+                canvas.particlesContainer.setColorOfParticles(canvas.particles.color);
+                canvas.particlesContainer.redraw();
             });
         }
 
@@ -518,7 +531,7 @@ export default class Canvas {
         this.requestFrameID = requestAnimationFrame(this.render.bind(this));
         this.stats.begin();
 
-            let areParticlesAnimating = this.particlesContainer.nextStep();
+        let areParticlesAnimating = this.particlesContainer.nextStep();
         let isOldVisualizationAnimating = this.visualizationOld ? this.visualizationOld.nextStep() : false;
         let isNewVisualizationAnimating = this.visualization.nextStep();
 

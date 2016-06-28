@@ -1,12 +1,11 @@
 import "pixi.js";
-import Color from "color-js";
 
 export default class Particle extends PIXI.Graphics {
 
     constructor(data, x, y, size, speed, shape, color) {
         super();
 
-        this.color = color;
+        this.color = color.RGBToHSL();
         this.size = size;
         this.redraw();
 
@@ -21,7 +20,6 @@ export default class Particle extends PIXI.Graphics {
             "width": size,
             "height": size
         };
-        this.aimedColor = color;
         this.aimedAlpha = 1;
 
         this.data = data;
@@ -32,8 +30,8 @@ export default class Particle extends PIXI.Graphics {
     }
 
     redraw(){
-        this.lineStyle(0, 0xFFFFFF, 1);
-        this.beginFill(this.color, 1);
+        this.lineStyle(0, 0xFFFFFF, 0);
+        this.beginFill(this.color.HSLToHex(), 1);
         this.drawRect(0, 0, this.size, this.size);
     }
 
@@ -41,7 +39,6 @@ export default class Particle extends PIXI.Graphics {
         switch (type) {
             case "none":
                 this.isAnimating = false;
-
                 this.setPosition(x, y);
                 this.setDestination(x, y);
                 this.setSize(width, height);
@@ -102,31 +99,11 @@ export default class Particle extends PIXI.Graphics {
             }
         }
 
-        if(this.color !== this.aimedColor){
-            let currentColor = Color("#"+this.color.toString(16));
-            let aimedColor = Color("#"+this.aimedColor.toString(16));
-            //let delta = Math.abs(currentColor.getHue() - aimedColor.getHue());
-
-            console.log(this.color)
-
-            // Duration: 1 frame and up to 360 frames
-            if(currentColor.getHue() > aimedColor.getHue()){
-                currentColor = currentColor.setHue(currentColor.getHue() - 1);
-                this.color = currentColor.toCSS().toHex();
-            } else{
-                currentColor = currentColor.setHue(currentColor.getHue() + 1);
-                this.color = currentColor.toCSS().toHex();
-            }
-
-            console.log(this.color)
-        }
-
         if (
             this.position.equals(this.destination) &&
             this._width == this.aimedSize.width &&
             this._height == this.aimedSize.height &&
-            this.alpha === this.aimedAlpha &&
-            this.color === this.aimedColor
+            this.alpha === this.aimedAlpha
         ) {
             this.isAnimating = false;
         }
@@ -166,12 +143,12 @@ export default class Particle extends PIXI.Graphics {
         this.buttonMode = true;
 
         this.on("mouseover", function (ev) {
-            this.color = this.color + 100;
+            this.color[2] = Math.max(this.color[2] + 0.1, 0);
             this.redraw();
         }.bind(this));
 
         this.on("mouseout", function (ev) {
-            this.color = this.color - 100;
+            this.color[2] = Math.min(this.color[2] - 0.1, 1);
             this.redraw();
         }.bind(this));
     }

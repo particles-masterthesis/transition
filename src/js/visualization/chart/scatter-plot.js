@@ -242,7 +242,7 @@ export default class ScatterPlot extends Chart {
                     this.particles[i].alpha = 1;
 
                     if (newParticles) {
-                        this.particles[i].setPosition(x + this.padding, this.heightVisualization + this.padding - y).setSize(this.options.sizeParticles, this.options.sizeParticles);
+                        this.particles[i].transitionTo(x + this.padding, this.heightVisualization + this.padding - y, this.options.sizeParticles, this.options.sizeParticles, "none");
                     } else {
                         this.particles[i].transitionTo(x + this.padding, this.heightVisualization + this.padding - y, this.options.sizeParticles, this.options.sizeParticles, transitionType);
                     }
@@ -260,7 +260,7 @@ export default class ScatterPlot extends Chart {
                     this.particles[i].alpha = 1;
 
                     if (newParticles) {
-                        this.particles[i].setPosition(x + this.padding, y + this.padding).setSize(this.options.sizeParticles, this.options.sizeParticles);
+                        this.particles[i].transitionTo(x + this.padding, y + this.padding, this.options.sizeParticles, this.options.sizeParticles, "none");
                     } else {
                         this.particles[i].transitionTo(x + this.padding, y + this.padding, this.options.sizeParticles, this.options.sizeParticles, transitionType);
                     }
@@ -279,7 +279,7 @@ export default class ScatterPlot extends Chart {
                     this.particles[i].alpha = 1;
 
                     if (newParticles) {
-                        this.particles[i].setPosition(x + this.padding, y + this.padding).setSize(this.options.sizeParticles, this.options.sizeParticles);
+                        this.particles[i].transitionTo(x + this.padding, y + this.padding, this.options.sizeParticles, this.options.sizeParticles, "none");
                     } else {
                         this.particles[i].transitionTo(x + this.padding, y + this.padding, this.options.sizeParticles, this.options.sizeParticles, transitionType);
                     }
@@ -298,7 +298,7 @@ export default class ScatterPlot extends Chart {
                     this.particles[i].alpha = 1;
 
                     if (newParticles) {
-                        this.particles[i].setPosition(x + this.padding, this.heightVisualization + this.padding - y).setSize(this.options.sizeParticles, this.options.sizeParticles);
+                        this.particles[i].transitionTo(x + this.padding, this.heightVisualization + this.padding - y, this.options.sizeParticles, this.options.sizeParticles, "none");
                     } else {
                         this.particles[i].transitionTo(x + this.padding, this.heightVisualization + this.padding - y, this.options.sizeParticles, this.options.sizeParticles, transitionType);
                     }

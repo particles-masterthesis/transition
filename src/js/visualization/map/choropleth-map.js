@@ -1,9 +1,9 @@
-import BaseMap from "./base-map";
+import Map from "./map";
 
-export default class ChoroplethMap extends BaseMap {
+export default class ChoroplethMap extends Map {
 
-    constructor(width, height, particlesContainer, levelOfDetail, colorScheme, animationCb){
-        super(width, height, particlesContainer, levelOfDetail, true);
+    constructor(width, height, particleContainer, levelOfDetail, colorScheme, animationCb){
+        super(width, height, particleContainer, levelOfDetail, true);
         this.levelOfDetail = levelOfDetail;
         this.colorScheme = colorScheme;
 
@@ -79,7 +79,7 @@ export default class ChoroplethMap extends BaseMap {
     }
 
     removeSvgElement(element, animationCb){
-        if(this.isFunction(animationCb)){
+        if(isFunction(animationCb)){
             this[element]
             .transition()
             .attr("fill", "#D3D3D3")
@@ -95,7 +95,7 @@ export default class ChoroplethMap extends BaseMap {
     update(levelOfDetail, colorScheme){
         this.levelOfDetail = levelOfDetail;
         this.colorScheme = colorScheme;
-        super.updateBaseMap(levelOfDetail);
+        super.changeLevelOfDetail(levelOfDetail);
         this.baseMap.svg.attr('class', this.colorScheme);
         this.drawChoropleth(true);
         this.drawLegend(true);
@@ -116,7 +116,7 @@ export default class ChoroplethMap extends BaseMap {
         .enter()
         .append("path");
 
-        if(this.isFunction(animationCb)){
+        if(isFunction(animationCb)){
             this[id]
             .attr("fill", "#D3D3D3")
             .transition()

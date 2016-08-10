@@ -7,9 +7,9 @@ export default function (dataStore, ui, canvas, update) {
         update(dataStore, canvas);
     });
 
-    folderBarChart.add(canvas.particlesContainer, "animatePerBar");
+    folderBarChart.add(canvas.particleContainer, "animatePerBar");
 
-    folderBarChart.add(canvas.particlesContainer, "animateBarsColored");
+    folderBarChart.add(canvas.particleContainer, "animateBarsColored");
 
     folderBarChart.open();
 

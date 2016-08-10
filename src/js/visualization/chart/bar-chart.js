@@ -1,6 +1,6 @@
-import Chart from "./chart";
+import Visualization from "./../visualization";
 
-export default class BarChart extends Chart {
+export default class BarChart extends Visualization {
 
     /**
      * @param width
@@ -8,8 +8,8 @@ export default class BarChart extends Chart {
      * @param particles
      * @param options
      */
-    constructor(width, height, particlesContainer, options) {
-        super(width, height, particlesContainer);
+    constructor(width, height, particleContainer, options) {
+        super(width, height, particleContainer);
 
         // for animating the complete viz during transition
         this.speed = 4;
@@ -285,13 +285,13 @@ export default class BarChart extends Chart {
                 for(let i=0; i<this.labelsX.children.length; i++){
                     this.labelsX.children[i].style = styleDefault;
                 }
-                this.particlesContainer.resetHighPriorityParticles();
+                this.particleContainer.resetHighPriorityParticles();
                 return;
             }
 
             label.isActive = true;
             label.style = styleActive;
-            this.particlesContainer.setHighPriorityParticles(index);
+            this.particleContainer.setHighPriorityParticles(index);
         }.bind(this);
 
         // Print ticks to the x axis

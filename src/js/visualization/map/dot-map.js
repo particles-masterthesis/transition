@@ -1,4 +1,4 @@
-import BaseMap from "./base-map";
+import Map from "./map";
 
 function drawParticle(particle, size, animated){
     if(animated) particle.setAlpha(0);
@@ -14,10 +14,10 @@ function drawParticle(particle, size, animated){
 
 function drawFunc(particle, size){
     drawParticle(particle, size, true);
-    this.particlesContainer.startAnimation();
+    this.particleContainer.startAnimation();
 }
 
-export default class DotMap extends BaseMap {
+export default class DotMap extends Map {
 
     constructor(width, height, particleContainer, levelOfDetail, animationCb, sizeOfParticles){
         super(width, height, particleContainer, levelOfDetail, true);
@@ -28,7 +28,7 @@ export default class DotMap extends BaseMap {
     drawData(animationCb, areParticlesNew){
         let point;
 
-        if(this.isFunction(animationCb)){
+        if(isFunction(animationCb)){
             for(let particle of this.particles){
                 point = [particle.data.Longitude, particle.data.Latitude];
                 point = this.baseMap.projection(point);
@@ -59,6 +59,7 @@ export default class DotMap extends BaseMap {
         this.baseMap.svg.transition().duration(1/60)
             .attr("transform", "translate(" + this.position.x + "," + this.position.y + ") scale(" + this.scale.x + "," + this.scale.y + ")");
     }
+
     nextStep() {
         super.nextStep();
 

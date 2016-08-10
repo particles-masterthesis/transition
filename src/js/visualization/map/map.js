@@ -1,11 +1,11 @@
 import Visualization from "./../visualization";
 import D3 from "./d3";
 
-export default class BaseMap extends Visualization {
+export default class Map extends Visualization {
 
-    constructor(width, height, particlesContainer, levelOfDetail, drawMap) {
-        super(width, height, particlesContainer);
-        
+    constructor(width, height, particleContainer, levelOfDetail, drawMap) {
+        super(width, height, particleContainer);
+
         this.baseMap = D3.instance;
         this.levelOfDetail = levelOfDetail;
 
@@ -13,15 +13,11 @@ export default class BaseMap extends Visualization {
             this.baseMap.init(width, height, levelOfDetail, drawMap);
         }
 
-        if (drawMap) this.updateBaseMap(levelOfDetail);
+        if (drawMap) this.changeLevelOfDetail(levelOfDetail);
     }
 
-    updateBaseMap(levelOfDetail) {
+    changeLevelOfDetail(levelOfDetail) {
         this.baseMap.update(levelOfDetail);
-    }
-
-    resetSvg() {
-        this.baseMap.reset();
     }
 
     hide(hideSvg, hideMap) {
@@ -47,9 +43,4 @@ export default class BaseMap extends Visualization {
 
         return map.centroids[levelOfDetail][identifierId];
     }
-
-    isFunction(cb) {
-        return cb && ({}).toString.call(cb) === '[object Function]';
-    }
-
 }

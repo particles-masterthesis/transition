@@ -1,8 +1,8 @@
-import BaseMap from "./base-map";
+import Map from "./map";
 
-export default class Cartogram extends BaseMap {
-    constructor(width, height, particlesContainer, levelOfDetail, animationCb){
-        super(width, height, particlesContainer, levelOfDetail, false);
+export default class Cartogram extends Map {
+    constructor(width, height, particleContainer, levelOfDetail, animationCb){
+        super(width, height, particleContainer, levelOfDetail, false);
         this.levelOfDetail = levelOfDetail;
 
         super.show(true, false);
@@ -65,7 +65,7 @@ export default class Cartogram extends BaseMap {
         .append("rect")
         .attr("class", "rect");
 
-        if(this.isFunction(animationCb)){
+        if(isFunction(animationCb)){
             this.node
             .attr('width', 0)
             .attr('height', 0)
@@ -154,7 +154,7 @@ export default class Cartogram extends BaseMap {
     }
 
     removeSvgElement(element, animationCb){
-        if(this.isFunction(animationCb)){
+        if(isFunction(animationCb)){
 
             this[element]
             .transition()

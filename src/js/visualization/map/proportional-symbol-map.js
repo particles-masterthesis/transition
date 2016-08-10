@@ -1,7 +1,6 @@
-import BaseMap from "./base-map";
+import Map from "./map";
 
-
-export default class ProportionalSymbolMap extends BaseMap {
+export default class ProportionalSymbolMap extends Map {
 
     constructor(width, height, particleContainer, levelOfDetail, animationCb){
         super(width, height, particleContainer, levelOfDetail, true);
@@ -51,7 +50,7 @@ export default class ProportionalSymbolMap extends BaseMap {
             return "translate(" + coords + ")";
         });
 
-        if(this.isFunction(animationCb)){
+        if(isFunction(animationCb)){
             this[id]
             .attr("r", 0)
             .transition()
@@ -71,7 +70,7 @@ export default class ProportionalSymbolMap extends BaseMap {
 
     update(levelOfDetail){
         this.levelOfDetail = levelOfDetail;
-        super.updateBaseMap(levelOfDetail);
+        super.changeLevelOfDetail(levelOfDetail);
         this.drawSymbols();
         this.drawLegend();
     }
@@ -83,7 +82,7 @@ export default class ProportionalSymbolMap extends BaseMap {
     }
 
     removeSvgElement(element, animationCb){
-        if(this.isFunction(animationCb)){
+        if(isFunction(animationCb)){
             this[element]
             .transition()
             .attr("r", 0)

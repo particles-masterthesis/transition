@@ -1,6 +1,6 @@
 import Particle from "./particle";
 
-export default class ParticlesContainer extends PIXI.Container {
+export default class ParticleContainer extends PIXI.Container {
     constructor() {
         super();
 

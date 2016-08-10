@@ -1,9 +1,9 @@
-import Chart from "./chart";
+import Visualization from "./../visualization";
 
-export default class ScatterPlot extends Chart {
+export default class ScatterPlot extends Visualization {
 
-    constructor(width, height, particlesContainer, options) {
-        super(width, height, particlesContainer);
+    constructor(width, height, particleContainer, options) {
+        super(width, height, particleContainer);
 
         this.boundaries = this.getBoundaries(options.schema);
         this.nominalDict = {};

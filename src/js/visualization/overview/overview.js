@@ -3,8 +3,8 @@ import Particle from "../particle";
 
 export default class Overview extends Visualization {
 
-    constructor(width, height, particlesContainer) {
-        super(width, height, particlesContainer);
+    constructor(width, height, particleContainer) {
+        super(width, height, particleContainer);
     }
 
     drawData(newParticles) {

@@ -2,21 +2,21 @@ export default function (dataStore, ui, canvas, update) {
     let folder = ui.DatGui.addFolder("Particles");
 
     folder.add(canvas.particles, "arrivalSync").onChange((value) => {
-        canvas.particlesContainer.setParticlesSpeed(canvas.particles.speedPxPerFrame);
+        canvas.particleContainer.setParticlesSpeed(canvas.particles.speedPxPerFrame);
 
-        if (value) canvas.particlesContainer.calculateSpeedArrivingSameTime();
+        if (value) canvas.particleContainer.calculateSpeedArrivingSameTime();
     });
 
     folder.add(canvas.particles, "speedPxPerFrame", 0, 30).onChange((value) => {
-        canvas.particlesContainer.setParticlesSpeed(value);
-        if (canvas.particles.arrivalSync) canvas.particlesContainer.calculateSpeedArrivingSameTime();
-        if (canvas.visualizationOld) canvas.visualizationOld.calculateSpeed(canvas.particlesContainer.getAmountOfFrames());
-        canvas.visualization.calculateSpeed(canvas.particlesContainer.getAmountOfFrames());
+        canvas.particleContainer.setParticlesSpeed(value);
+        if (canvas.particles.arrivalSync) canvas.particleContainer.calculateSpeedArrivingSameTime();
+        if (canvas.visualizationOld) canvas.visualizationOld.calculateSpeed(canvas.particleContainer.getAmountOfFrames());
+        canvas.visualization.calculateSpeed(canvas.particleContainer.getAmountOfFrames());
     });
 
     folder.addColor(canvas.particles, "color").onChange((value) => {
-        canvas.particlesContainer.setColorOfParticles(value);
-        canvas.particlesContainer.redraw();
+        canvas.particleContainer.setColorOfParticles(value);
+        canvas.particleContainer.redraw();
     });
 
     folder.add(

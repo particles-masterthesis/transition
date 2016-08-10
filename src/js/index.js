@@ -179,13 +179,13 @@ function addEventListener(dataStore, canvas) {
     $("select.feature-x").not(".sort-by").change(function () {
         dataStore.oldSelectionX = dataStore.currentSelection.x;
         dataStore.currentSelection.x = $(this).children(":selected")[0].innerHTML;
-        canvas.prepareCanvas();
+        canvas.clean();
         window.updateScreen(dataStore, canvas);
     });
 
     $("select.feature-y").change(function () {
         dataStore.currentSelection.y = $(this).children(":selected")[0].innerHTML;
-        canvas.prepareCanvas();
+        canvas.clean();
         window.updateScreen(dataStore, canvas);
     });
 
@@ -202,7 +202,7 @@ function addEventListener(dataStore, canvas) {
         }
 
         UI.toggleFeatureDropdowns();
-        canvas.prepareCanvas();
+        canvas.clean();
         window.updateScreen(dataStore, canvas);
     });
 

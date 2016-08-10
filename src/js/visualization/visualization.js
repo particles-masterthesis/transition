@@ -2,10 +2,9 @@ import "pixi.js";
 
 export default class Visualization extends PIXI.Container {
 
-    constructor(width, height, particlesContainer) {
+    constructor(width, height, particleContainer) {
         super();
-        this.particlesContainer = particlesContainer;
-        this.particles = particlesContainer.children;
+        this.particleContainer = particleContainer;
         this.padding = 120;
         this.width = width;
         this.height = height;
@@ -17,6 +16,10 @@ export default class Visualization extends PIXI.Container {
         this.isAnimating = false;
         this.destination = new PIXI.Point(0, 0);
         this.aimedScale = new PIXI.Point(1, 1);
+    }
+
+    get particles(){
+        return this.particleContainer.children;
     }
 
     transitionTo(x, y, scale, type) {
@@ -52,7 +55,7 @@ export default class Visualization extends PIXI.Container {
         }
 
         // POSITION
-        if (!this.position.equals(this.destination)) {
+        if (this.x !== this.destination.x || this.y !== this.destination.y) {
             let deltaX = this.destination.x - this.position.x;
             let deltaY = this.destination.y - this.position.y;
             let distance = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
@@ -79,17 +82,12 @@ export default class Visualization extends PIXI.Container {
 
         // CHECK FOR COMPLETENESS
         if (
-            this.position.equals(this.destination) &&
+            this.x === this.destination.x &&
+            this.y === this.destination.y &&
             this.scale.x == this.aimedScale.x &&
             this.scale.y == this.aimedScale.y
         ) {
             this.isAnimating = false;
-        }
-        else{
-            let p = this.position.equals(this.destination);
-            let x = this.scale.x == this.aimedScale.x;
-            let y = this.scale.y == this.aimedScale.y;
-            return this.isAnimating;
         }
 
         return this.isAnimating;

@@ -41,7 +41,7 @@ export default class TransitionManager {
         for (let particle of this.currentViz.particles) {
             particle.fade('out');
         }
-        this.canvas.particlesContainer.startAnimation();
+        this.canvas.particleContainer.startAnimation();
     }
 
     animate(current, upcoming) {
@@ -105,7 +105,7 @@ export default class TransitionManager {
                         this.canvas.stop();
                         upcomingViz = this.drawDot();
                         this.canvas.render();
-                        this.canvas.particlesContainer.startAnimation();
+                        this.canvas.particleContainer.startAnimation();
                         resolve(upcomingViz);
                     });
                     break;

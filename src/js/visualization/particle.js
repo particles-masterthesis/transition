@@ -26,13 +26,17 @@ export default class Particle extends PIXI.Graphics {
         this.id = this.data["Row ID"];
         this.shape = shape;
 
-        this.addClickListener();
+        this.addClickListeners();
     }
 
     redraw(){
         this.lineStyle(0, 0xFFFFFF, 0);
         this.beginFill(this.color.HSLToHex(), 1);
-        this.drawRect(0, 0, this.size, this.size);
+        if(this.shape === "rectangle"){
+            this.drawRect(0, 0, this.size, this.size);
+        } else {
+            this.drawCircle(0, 0, this.size/2);
+        }
     }
 
     transitionTo(x, y, width, height, type) {
@@ -61,7 +65,7 @@ export default class Particle extends PIXI.Graphics {
             return false;
         }
 
-        if (!this.position.equals(this.destination)) {
+        if (this.x !== this.destination.x || this.y !== this.destination.y) {
             let deltaX = this.destination.x - this.position.x;
             let deltaY = this.destination.y - this.position.y;
             let distance = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
@@ -100,7 +104,8 @@ export default class Particle extends PIXI.Graphics {
         }
 
         if (
-            this.position.equals(this.destination) &&
+            this.x === this.destination.x &&
+            this.y === this.destination.y &&
             this._width == this.aimedSize.width &&
             this._height == this.aimedSize.height &&
             this.alpha === this.aimedAlpha
@@ -129,6 +134,7 @@ export default class Particle extends PIXI.Graphics {
     setSize(width, height) {
         this.width = width;
         this.height = height;
+
         return this;
     }
 
@@ -138,7 +144,7 @@ export default class Particle extends PIXI.Graphics {
         return this;
     }
 
-    addClickListener(stage) {
+    addClickListeners(stage) {
         this.interactive = true;
         this.buttonMode = true;
 

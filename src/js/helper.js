@@ -371,4 +371,3 @@ String.prototype.RGBToHSL = function () {
 
     return [h, s, l];
 };
-

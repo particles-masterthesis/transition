@@ -4,9 +4,9 @@ export default class DataStore {
         this.data = [];
         this.features = [];
         this.schema = {};
-        this.useSubset = true;
+        this.useSubset = false;
 
-        this.sizeOfSubset = 20;
+        this.sizeOfSubset = 100;
 
         this.currentSelection = {
             x: null,
@@ -93,7 +93,6 @@ export default class DataStore {
 
                 this.currentSelection.x = this.features[this.features.indexOf("Region")];
                 this.currentSelection.y = this.features[this.features.indexOf("Latitude")];
-
             }
         });
 

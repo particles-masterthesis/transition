@@ -270,12 +270,14 @@ export default class BarChart extends Visualization {
         this.labelsX = new PIXI.Container();
 
         let styleDefault = {
-            font: "12px Arial",
+            fontSize: "12px",
+            fontFamily: "Arial",
             fill: 0x000000
         };
 
         let styleActive = {
-            font: "12px Arial",
+            fontSize: "12px",
+            fontFamily: "Arial",
             fill: 0x34a853
         };
 
@@ -344,7 +346,8 @@ export default class BarChart extends Visualization {
         while (y >= endPointTicksY) {
             const text = Math.round(Math.abs(this._height - this.padding - y) / size * particlesPerRow);
             const tickLabel = new PIXI.Text(text, {
-                font: "12px Arial"
+                fontSize: "12px",
+                fontFamily: "Arial"
             });
             tickLabel.anchor = new PIXI.Point(1, 0.5);
             tickLabel.x = this.padding - 10;
@@ -362,7 +365,8 @@ export default class BarChart extends Visualization {
 
     drawLabels(features, title) {
         const xLabel = new PIXI.Text(features.x, {
-            font: "14px Arial"
+            fontSize: "14px",
+            fontFamily: "Arial"
         });
         xLabel.anchor = new PIXI.Point(0.5, 0.5);
         xLabel.x = this._width / 2;
@@ -370,7 +374,8 @@ export default class BarChart extends Visualization {
         this.addChild(xLabel);
 
         const yLabel = new PIXI.Text(features.y, {
-            font: "14px Arial"
+            fontSize: "14px",
+            fontFamily: "Arial"
         });
         yLabel.anchor = new PIXI.Point(0.5, 0.5);
         yLabel.x = 20;
@@ -379,7 +384,8 @@ export default class BarChart extends Visualization {
         this.addChild(yLabel);
 
         const titleLabel = new PIXI.Text(title, {
-            font: "16px Arial"
+            fontSize: "16px",
+            fontFamily: "Arial"
         });
         titleLabel.anchor = new PIXI.Point(0.5, 0.5);
         titleLabel.x = this._width / 2;

@@ -2,6 +2,7 @@ doctype html
 html
     head
         title Particles
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
         link(href="dist/main.css" rel="stylesheet" type="text/css")
     body
         nav.navbar.navbar-default
@@ -21,11 +22,15 @@ html
                             option(value="overview" selected) Overview
                             option(value="barChart") Bar chart
                             option(value="scatterPlot") Scatter plot
-                            option(value="dot") Dot map
-                            option(value="psm") Proportional symbol map
-                            option(value="choropleth") Choropleth map
-                            option(value="cartogram") Cartogram
+                            //option(value="dot") Dot map
+                            //option(value="psm") Proportional symbol map
+                            //option(value="choropleth") Choropleth map
+                            //option(value="cartogram") Cartogram
+                    li
+                        button(type="button" class="btn btn-default btn-sm" id="button-pause")
+                            span(class="glyphicon glyphicon-pause" aria-hidden="true") Pause
                     br
+
                     li
                         | Transition
                         select.selectpicker.transition
@@ -37,13 +42,12 @@ html
                             option(value="inPlace" selected) In-place
                             option(value="juxtaposition") Juxtaposition
                             option(value="stacked") Stacked
-
                     li
                         | Sort
                         select.selectpicker.sort-type
-                            option(value="automatically" selected) automatically
-                            option(value="manually") manually
+                            option(value="automatically") automatically
+                            option(value="manually" selected) manually
                         | by
-                        select.selectpicker.feature.sort-by(disabled="true")
+                        select.selectpicker.feature.sort-by(disabled="false")
 
     script(src="dist/main.js")

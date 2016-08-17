@@ -192,7 +192,7 @@ function addEventListener(dataStore, canvas) {
     $("select.visualization").change(function () {
         let value = $(this).val();
 
-        if(value === "psm" || value === "choropleth" || value == "cartogram"){
+        if (value === "psm" || value === "choropleth" || value == "cartogram") {
             $("select.transition-layout option").filter(function (index) {
                 return $(this).val() === "inPlace";
             }).prop("selected", true);
@@ -220,4 +220,45 @@ function addEventListener(dataStore, canvas) {
         dataStore.changeSorting(sortByFeature);
         canvas.changeSorting(sortByFeature);
     });
+
+    $("#button-pause").click(function () {
+        if ($("#button-pause span").hasClass("glyphicon-pause")) {
+            $("#button-pause span").removeClass("glyphicon-pause").addClass("glyphicon-play").text("Play");
+            canvas.particleContainer.setParticlesSpeed(0);
+        } else {
+            $("#button-pause span").removeClass("glyphicon-play").addClass("glyphicon-pause").text("Pause");
+            canvas.particleContainer.setParticlesSpeed(canvas.particles.speedPxPerFrame);
+        }
+    });
+
+    $("body").keypress(function (event) {
+        // + = 43
+        if (event.which == 43 && canvas.particles.speedPxPerFrame < 30) {
+            canvas.particles.speedPxPerFrame += 1;
+            canvas.particleContainer.setParticlesSpeed(canvas.particles.speedPxPerFrame);
+        }
+        // - = 45
+        else if (event.which == 45 && canvas.particles.speedPxPerFrame > 0) {
+            canvas.particles.speedPxPerFrame -= 1;
+            canvas.particleContainer.setParticlesSpeed(canvas.particles.speedPxPerFrame);
+        }
+        // p = 112
+        else if (event.which == 112) {
+            if ($("#button-pause span").hasClass("glyphicon-pause")) {
+                $("#button-pause span").removeClass("glyphicon-pause").addClass("glyphicon-play").text("Play");
+                canvas.particleContainer.setParticlesSpeed(0);
+            } else {
+                $("#button-pause span").removeClass("glyphicon-play").addClass("glyphicon-pause").text("Pause");
+                canvas.particleContainer.setParticlesSpeed(canvas.particles.speedPxPerFrame);
+            }
+        }
+
+        if((event.which === 43 || event.which === 45) && canvas.particles.arrivalSync){
+            canvas.particleContainer.calculateSpeedArrivingSameTime();
+        }
+    });
 }
+
+window.isFunction = function (cb) {
+    return cb && ({}).toString.call(cb) === '[object Function]';
+};

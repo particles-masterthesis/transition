@@ -21,7 +21,8 @@ export default class ScatterPlot extends Visualization {
      */
     addLabels(features, title) {
         const xLabel = new PIXI.Text(features.x, {
-            font: "14px Arial"
+            fontSize: "14px",
+            fontFamily: "Arial"
         });
         xLabel.anchor = new PIXI.Point(0.5, 0.5);
         xLabel.x = this._width / 2;
@@ -29,7 +30,8 @@ export default class ScatterPlot extends Visualization {
         this.addChild(xLabel);
 
         const yLabel = new PIXI.Text(features.y, {
-            font: "14px Arial"
+            fontSize: "14px",
+            fontFamily: "Arial"
         });
         yLabel.anchor = new PIXI.Point(0.5, 0.5);
         yLabel.x = 20;
@@ -38,7 +40,8 @@ export default class ScatterPlot extends Visualization {
         this.addChild(yLabel);
 
         const titleLabel = new PIXI.Text(title, {
-            font: "16px Arial"
+            fontSize: "16px",
+            fontFamily: "Arial"
         });
         titleLabel.anchor = new PIXI.Point(0.5, 0.5);
         titleLabel.x = this._width / 2;
@@ -110,7 +113,8 @@ export default class ScatterPlot extends Visualization {
      */
     addTickX(x, labelText, ticks, rotate) {
         const tickLabel = new PIXI.Text(labelText, {
-            font: "12px Arial"
+            fontSize: "12px",
+            fontFamily: "Arial"
         });
         tickLabel.anchor = new PIXI.Point(0.5, 0.5);
         tickLabel.x = this.padding + x;
@@ -133,7 +137,8 @@ export default class ScatterPlot extends Visualization {
      */
     addTickY(y, labelText, ticks) {
         const tickLabel = new PIXI.Text(labelText, {
-            font: "12px Arial"
+            fontSize: "12px",
+            fontFamily: "Arial"
         });
         tickLabel.anchor = new PIXI.Point(1, 0.5);
         tickLabel.x = this.padding - 10;
@@ -227,7 +232,6 @@ export default class ScatterPlot extends Visualization {
         let x, y;
         let transitionType = $("select.transition").val();
         let moveOriginBy = this.options.sizeParticles / 2;
-
 
         switch (this.boundaries.schema) {
 

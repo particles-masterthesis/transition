@@ -7,7 +7,7 @@ export default function (dataStore, ui, canvas, update) {
         if (value) canvas.particleContainer.calculateSpeedArrivingSameTime();
     });
 
-    folder.add(canvas.particles, "speedPxPerFrame", 0, 30).onChange((value) => {
+    folder.add(canvas.particles, "speedPxPerFrame", 0, 30).listen().onChange((value) => {
         canvas.particleContainer.setParticlesSpeed(value);
         if (canvas.particles.arrivalSync) canvas.particleContainer.calculateSpeedArrivingSameTime();
         if (canvas.visualizationOld) canvas.visualizationOld.calculateSpeed(canvas.particleContainer.getAmountOfFrames());

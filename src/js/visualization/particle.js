@@ -7,7 +7,6 @@ export default class Particle extends PIXI.Graphics {
 
         this.color = color.RGBToHSL();
         this.size = size;
-        this.redraw();
 
         this.margin = 1;
         this.alpha = 1;
@@ -26,6 +25,7 @@ export default class Particle extends PIXI.Graphics {
         this.id = this.data["Row ID"];
         this.shape = shape;
 
+        this.redraw();
         this.addClickListeners();
     }
 
@@ -35,6 +35,7 @@ export default class Particle extends PIXI.Graphics {
         if(this.shape === "rectangle"){
             this.drawRect(0, 0, this.size, this.size);
         } else {
+            console.log("circle");
             this.drawCircle(0, 0, this.size/2);
         }
     }

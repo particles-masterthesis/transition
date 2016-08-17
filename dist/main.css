@@ -6766,6 +6766,7 @@ body {
 .navbar-nav li {
   margin-left: 15px;
 }
+.navbar-nav button,
 .navbar-nav select {
   height: 30px;
   margin: 10px;

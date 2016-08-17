@@ -24,7 +24,7 @@ export default class Canvas {
         this.requestFrameID = null;
 
         this.particles = {
-            "speedPxPerFrame": 15,
+            "speedPxPerFrame": 10,
             "arrivalSync": false,
             "shape": "rectangle",
             "sizeOfParticles": 4,       // Only for scatter-plot relevant

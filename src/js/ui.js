@@ -21,6 +21,10 @@ export default class UI {
                 $(".feature-y").append(`<option>${feature}</option>`);
             }
         }
+
+        $("select.sort-by option").filter(function (index) {
+            return $(this).text() === "Row ID";
+        }).prop("selected", true);
     }
 
     static toggleFeatureDropdowns() {

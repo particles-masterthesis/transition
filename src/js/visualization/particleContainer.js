@@ -11,7 +11,7 @@ export default class ParticleContainer extends PIXI.Container {
         this.isThisPreparation = false;
 
         // Bar chart
-        this.animatePerBar = true;
+        this.animatePerBar = false;
         this.currentBarIndex = 0;
         this.amountOfBars = 0;
         this.animateBarsColored = false;

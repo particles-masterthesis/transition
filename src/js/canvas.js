@@ -478,8 +478,15 @@ export default class Canvas {
 
         // Only remove the vizualization if we don't need it any more
         // for transitions with layout != in place we need the viz as optical source
-        if (transitionType === "none" || transitionLayout === "inPlace") {
+        if (transitionType === "none") {
             this.removeVisualizations();
+        }
+
+        if(transitionLayout === "inPlace"){
+            this.stage.removeChild(this.visualization);
+            if (this.visualizationOld){
+                this.stage.removeChild(this.visualizationOld);
+            }
         }
     }
 

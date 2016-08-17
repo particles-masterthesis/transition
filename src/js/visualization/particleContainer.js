@@ -11,7 +11,7 @@ export default class ParticleContainer extends PIXI.Container {
         this.isThisPreparation = false;
 
         // Bar chart
-        this.animatePerBar = false;
+        this.animatePerBar = true;
         this.currentBarIndex = 0;
         this.amountOfBars = 0;
         this.animateBarsColored = false;
@@ -44,18 +44,17 @@ export default class ParticleContainer extends PIXI.Container {
                 this.hasHighPriorityBar = false;
             }
         } else {
-            for (let i = 0; i < this.children.length; i++) {
 
-                let child = this.getChildAt(i);
+            // Animating bar chart and bar by bar
+            if (
+                window.canvas.visualizationOld &&
+                window.canvas.visualizationOld.constructor.name == "BarChart" &&
+                this.animatePerBar && !this.isThisPreparation
+            ) {
+                for (let i = 0; i < this.children.length; i++) {
+                    let child = this.getChildAt(i);
 
-                // Animating bar chart and bar by bar
-                if(
-                    window.canvas.visualizationOld &&
-                    window.canvas.visualizationOld.constructor.name == "BarChart" &&
-                    this.animatePerBar &&
-                    !this.isThisPreparation
-                ){
-                    if(child.oldBar === this.currentBarIndex) {
+                    if (child.oldBar === this.currentBarIndex) {
                         particleReachedDestination = !child.animate();
                         if (particleReachedDestination === false) {
                             isBarFinished = false;
@@ -63,12 +62,14 @@ export default class ParticleContainer extends PIXI.Container {
                         }
                     }
 
-                    if(this.amountOfBars < child.oldBar){
+                    if (this.amountOfBars < child.oldBar) {
                         this.amountOfBars = child.oldBar;
                     }
                 }
-                // Animating everything else
-                else {
+            }
+            else {
+                for (let i = 0; i < this.children.length; i++) {
+                    let child = this.getChildAt(i);
                     particleReachedDestination = !child.animate();
                     if (particleReachedDestination === false) {
                         particlesReachedDestinations = false;
@@ -77,7 +78,7 @@ export default class ParticleContainer extends PIXI.Container {
             }
 
             // Bar chart
-            if(isBarFinished && this.amountOfBars !== this.currentBarIndex){
+            if (isBarFinished && this.amountOfBars !== this.currentBarIndex) {
                 particlesReachedDestinations = false;
                 this.currentBarIndex++;
             }
@@ -151,17 +152,17 @@ export default class ParticleContainer extends PIXI.Container {
         document.body.appendChild(table);
     }
 
-    setColorOfParticles(color){
+    setColorOfParticles(color) {
         color = color.RGBToHSL();
         for (let i = 0; i < this.children.length; i++) {
             this.children[i].color = color;
         }
     }
 
-    setColorOfBars(){
+    setColorOfBars() {
         let amountOfBars = 0;
         for (let i = 0; i < this.children.length; i++) {
-            if(amountOfBars < this.children[i].bar){
+            if (amountOfBars < this.children[i].bar) {
                 amountOfBars = this.children[i].bar;
             }
         }
@@ -171,11 +172,11 @@ export default class ParticleContainer extends PIXI.Container {
 
         var startColor = "#00FFFF".RGBToHSL();
         startColor[1] = startColor[1] - 0.2;        // less saturation
-        startColor[2] = startColor[2] + 0.2 ;       // more light
+        startColor[2] = startColor[2] + 0.2;       // more light
 
         let colors = [];
         for (let i = 0; i < amountOfBars; i++) {
-            let hue = 1/amountOfBars*i;
+            let hue = 1 / amountOfBars * i;
             colors.push([hue, startColor[1], startColor[2]]);
         }
 
@@ -184,7 +185,7 @@ export default class ParticleContainer extends PIXI.Container {
         }
     }
 
-    redraw(){
+    redraw() {
         for (let i = 0; i < this.children.length; i++) {
             this.children[i].redraw();
         }
@@ -235,7 +236,7 @@ export default class ParticleContainer extends PIXI.Container {
             }
         }
 
-        if(counter === 0){
+        if (counter === 0) {
             return 0;
         }
 

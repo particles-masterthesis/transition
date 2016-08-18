@@ -181,12 +181,14 @@ function addEventListener(dataStore, canvas) {
         dataStore.currentSelection.x = $(this).children(":selected")[0].innerHTML;
         canvas.clean();
         window.updateScreen(dataStore, canvas);
+        $(this).blur();
     });
 
     $("select.feature-y").change(function () {
         dataStore.currentSelection.y = $(this).children(":selected")[0].innerHTML;
         canvas.clean();
         window.updateScreen(dataStore, canvas);
+        $(this).blur();
     });
 
     $("select.visualization").change(function () {
@@ -204,6 +206,7 @@ function addEventListener(dataStore, canvas) {
         UI.toggleFeatureDropdowns();
         canvas.clean();
         window.updateScreen(dataStore, canvas);
+        $(this).blur();
     });
 
     $("select.transition").change(function () {
